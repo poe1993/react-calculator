@@ -2,25 +2,33 @@ import React, { useState } from 'react'
 
 export function Calculator() {
   //create initial state for the display
-  const [display, setDisplay] = useState(0)
+  const [display, setDisplay] = useState(0.0)
 
   //create initial state for the first Number
-  const [firstDigit, setFirstDigit] = useState(null)
+  const [firstDigit, setFirstDigit] = useState('')
 
   //create initial state for the second Number
-  const [secondDigit, setSecondDigit] = useState(null)
+  const [secondDigit, setSecondDigit] = useState('')
 
   //create initial state for the Operand
   const [operand, setOperand] = useState(null)
 
-  //stores information on the number licked
+  //stores information on the number clicked
   function clickedDigit(digit) {
     if (operand === null) {
-      setFirstDigit(digit)
-      setDisplay(digit)
+      if (firstDigit.includes('.') && digit === '.') {
+        //play a beep noise
+      } else {
+        setFirstDigit(`${firstDigit}${digit}`)
+        setDisplay(`${firstDigit}${digit}`)
+      }
     } else {
-      setSecondDigit(digit)
-      setDisplay(digit)
+      if (secondDigit.includes('.') && digit === '.') {
+        //play a beep noise
+      } else {
+        setSecondDigit(`${secondDigit}${digit}`)
+        setDisplay(`${secondDigit}${digit}`)
+      }
     }
   }
 
@@ -31,28 +39,28 @@ export function Calculator() {
 
   // makes sum button useable and viewable
   function clickedEqualSign(sum) {
-    if (operand == '+') {
-      sum = firstDigit + secondDigit
+    if (operand === '+') {
+      sum = Number(firstDigit) + Number(secondDigit)
       setDisplay(sum)
     }
-    if (operand == '-') {
-      sum = firstDigit - secondDigit
+    if (operand === '-') {
+      sum = Number(firstDigit) - Number(secondDigit)
       setDisplay(sum)
     }
-    if (operand == 'x') {
-      sum = firstDigit * secondDigit
+    if (operand === 'x') {
+      sum = Number(firstDigit) * Number(secondDigit)
       setDisplay(sum)
     }
-    if (operand == '÷') {
-      sum = firstDigit / secondDigit
+    if (operand === '÷') {
+      sum = Number(firstDigit) / Number(secondDigit)
       setDisplay(sum)
     }
   }
 
   //makes the clear function useable and viewable
-  function clickClearButton(event) {
-    setFirstDigit(null)
-    setSecondDigit(null)
+  function clickClearButton() {
+    setFirstDigit('')
+    setSecondDigit('')
     setOperand(null)
     setDisplay(0)
   }
@@ -109,7 +117,9 @@ export function Calculator() {
           <button className="button x2" onClick={() => clickedDigit(0)}>
             0
           </button>
-          <button className="button">.</button>
+          <button className="button" onClick={() => clickedDigit('.')}>
+            .
+          </button>
           <button className="button op" onClick={() => clickedEqualSign()}>
             &#61;
           </button>
